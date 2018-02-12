@@ -1,0 +1,21 @@
+﻿@model MainViewModel
+@{
+	
+}
+
+@section body {
+	<section id="dropbox">
+		<form id="fileForm" action="@(Url.Action("UploadCSV", "Main"))" method="post" enctype="multipart/form-data">
+			<input id="fileField" name="fileField" type="file">
+		</form>
+		<div id="dropTarget">
+			<p>drop file here or click to browse</p>
+		</div>
+		<div id="progress" class="loadingBackground hidden"></div>
+		<p id="uploadError" class="error hidden"></p>
+	</section>
+}
+
+@section footer {
+	<p>Just want to test-drive? Feel free to use <a href="@(Url.Action("Dashboard", "Main"))">this example file</a>.</p>
+}

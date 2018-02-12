@@ -1,0 +1,109 @@
+﻿@import '_variables.scss';
+
+body.aba-page-index {
+	#main {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 500px;
+		max-width: 100%;
+		height: 400px;
+
+		transform: translate(-50%, -50%);
+	}
+
+	#dropbox {
+		position: relative;
+		width: 100%;
+		height: 100%;
+
+		#fileField {
+			position: absolute;
+			opacity: 0;
+			margin: 0;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+
+			cursor: pointer;
+
+			z-index: 2;
+		}
+		#dropTarget {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+
+			cursor: pointer;
+
+			background: url(/Content/Images/Icons/upload.svg) center center no-repeat;
+			background-size: 128px 128px;
+			border: 2px dashed $grey;
+
+			z-index: 1;
+
+			&.active {
+				border-color: $blue;
+			}
+
+			> p {
+				position: absolute;
+				margin: 0;
+				top: calc(50% + 32px);
+				left: 50%;
+				width: 100%;
+				max-width: 400px;
+
+				transform: translateX(-50%);
+
+				color: $black;
+				text-align: center;
+			}
+		}
+		#progress {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			
+			background-color: $white;
+			border: 2px dashed $grey;
+
+			z-index: 3;
+		}
+		#uploadError {
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+
+			text-align: center;
+
+			z-index: 4;
+		}
+	}
+
+	footer {
+		position: absolute;
+		left: 0;
+		bottom: 0;
+		width: 100%;
+		height: auto;
+
+		> p {
+			float: left;
+			margin: 0;
+
+			color: $white;
+			line-height: 20px;
+
+			> a {
+				color: $white !important;
+			}
+		}
+	}
+}

@@ -1,0 +1,22 @@
+﻿[
+	{
+		"outputFile": "Styles/Compiled/aba.main.css",
+		"inputFile": "Styles/aba.main.scss"
+	},
+	{
+		"outputFile": "Styles/Compiled/aba.index.css",
+		"inputFile": "Styles/aba.index.scss"
+	},
+	{
+		"outputFile": "Styles/Compiled/aba.dashboard.css",
+		"inputFile": "Styles/aba.dashboard.scss"
+	},
+	{
+		"outputFile": "Styles/Compiled/aba.about.css",
+		"inputFile": "Styles/aba.about.scss"
+	},
+	{
+		"outputFile": "Styles/Compiled/aba.error.css",
+		"inputFile": "Styles/aba.error.scss"
+	}
+]

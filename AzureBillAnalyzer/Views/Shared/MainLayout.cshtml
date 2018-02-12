@@ -1,0 +1,41 @@
+﻿@model MainViewModel
+@{
+
+}
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>Azure Bill Analyzer</title>
+
+	<link rel="icon" type="image/png" href="~/Content/Images/Icons/AppIcon.png">
+
+	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Muli:400,800">
+	@(Styles.Render(MVCConfig.bundledStyles))
+	@(RenderSection("styles", false))
+</head>
+<body class="aba-page-@(Model.PageClass)">
+	<header>
+		<h1>Azure Bill Analyzer</h1>
+		<nav id="headerNav">
+			<a href="@(Url.Action("About", "Main"))">About</a>
+		</nav>
+		@(RenderSection("header", false))
+	</header>
+
+	<main id="main">
+		@(RenderSection("body"))
+	</main>
+
+	<footer class="clearfix">
+		@(RenderSection("footer", false))
+		<p id="copyright">©@(DateTime.Now.Year) Samuel Trimble</p>
+	</footer>
+
+	@(Scripts.Render(MVCConfig.bundledScripts))
+	@(RenderSection("scripts", false))
+</body>
+</html>

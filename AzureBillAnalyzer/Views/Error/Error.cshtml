@@ -1,0 +1,52 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+@{
+	Layout = "";
+}
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>Azure Bill Analyzer</title>
+
+	<link rel="icon" type="image/png" href="/Content/Images/Icons/AppIcon.png">
+
+	@(Styles.Render(MVCConfig.bundledStyles))
+</head>
+<body class="aba-page-@(ViewBag.PageClass)">
+	<main id="main">
+		<div id="errorContainer">
+			<img class="aba_errorLogo" src="~/Content/Images/Icons/ErrorIcon.png">
+			<br><br>
+			<h1>Whoops!</h1>
+			@switch ((string)ViewBag.ErrorCode) {
+				case "404":
+					<h4>The specified page or resource could not be found!<br>Make sure the path you entered is correct or contact the site administrator.</h4>
+					<br>
+					if (!string.IsNullOrWhiteSpace(ViewBag.ResourcePath)) {
+						<p>Details:</p>
+						<p>Resource: &quot;@(ViewBag.ResourcePath)&quot;</p>
+					}
+					break;
+				default:
+					<h4>An unexpected error has occurred.<br>Please contact the site administrator.</h4>
+					<br>
+					if (Model != null && HttpContext.Current.IsDebuggingEnabled) {
+						<p>Details:</p>
+						<p>Exception: @Model.Exception.Message</p>
+						<p>Controller: @Model.ControllerName</p>
+						<p>Action: @Model.ActionName</p>
+						<br>
+						<br>
+						<p>Stack Trace: @Model.Exception.StackTrace</p>
+					}
+					break;
+			}
+		</div>
+	</main>
+	
+	@(Scripts.Render(MVCConfig.bundledScripts))
+</body>
+</html>
