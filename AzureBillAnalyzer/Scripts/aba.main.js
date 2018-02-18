@@ -9,6 +9,42 @@ class ABA_Main {
 		this._$window = $(window);
 		this._$document = $(document);
 		this._$body = $('body');
+
+		this._$nav = $('#mainNav');
+
+		//Handle main navigation drawer events
+		this._$nav
+			.on('click', '#hamburger', this.ToggleNavDrawer.bind(this))
+			.on('click', 'li', this.Navigate.bind(this));
+
+		//Set currently active nav item
+		this._$nav.find('[data-section="' + this._$body.data('section') + '"]').addClass('active');
+	}
+
+	ToggleNavDrawer(evt) {
+		this._$nav.toggleClass('open');
+
+		this.UpdateUserPreference("NavDrawerOpen", ((this._$nav.hasClass('open')) ? "true" : "false"));
+	}
+	Navigate(evt) {
+		let $target = $(evt.target);
+
+		if ($target.data('href').length > 0) {
+			window.location.href = $target.data('href');
+		}
+	}
+
+	UpdateUserPreference(pref, value) {
+		$.ajax({
+			url: "/Account/UpdatePreference",
+			type: 'POST',
+			data: JSON.stringify({
+				pref: pref,
+				value: value
+			}),
+			cache: false,
+			contentType: "application/json; charset=utf-8"
+		});
 	}
 }
 

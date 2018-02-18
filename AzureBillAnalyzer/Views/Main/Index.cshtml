@@ -14,8 +14,7 @@
 		<div id="progress" class="loadingBackground hidden"></div>
 		<p id="uploadError" class="error hidden"></p>
 	</section>
-}
-
-@section footer {
-	<p>Just want to test-drive? Feel free to use <a href="@(Url.Action("Dashboard", "Main"))">this example file</a>.</p>
+	<section id="testdrive">
+		<p>Just want to test-drive? Feel free to use <a href="@(Url.Action("Dashboard", "Main", new { file = Guid.Empty }))">this example file</a>.</p>
+	</section>
 }

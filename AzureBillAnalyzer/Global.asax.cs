@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using AzureBillAnalyzer.Core;
+using System;
+using System.IO;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -16,6 +16,22 @@ namespace AzureBillAnalyzer {
 			MVCConfig.RegisterGlobalFilters(GlobalFilters.Filters);
 			MVCConfig.RegisterRoutes(RouteTable.Routes);
 			MVCConfig.RegisterBundles(BundleTable.Bundles);
+		}
+
+		protected void Session_Start(object s, EventArgs e) {
+			Session.Add("__ABASessionData", ABASession.New());
+		}
+
+		protected void Session_End(object s, EventArgs e) {
+			ABASessionData sData = (ABASessionData)Session["__ABASessionData"];
+
+			//If the session user uploaded a custom file, delete it when the session ends
+			if (!sData.CurrentFile.Equals(Guid.Empty)) {
+				string path = Server.MapPath("~/Content/Uploads" + sData.CurrentFile.ToString() + ".csv");
+				if (File.Exists(path)) {
+					File.Delete(path);
+				}
+			}
 		}
 
 		protected void Application_BeginRequest(object s, EventArgs e) {

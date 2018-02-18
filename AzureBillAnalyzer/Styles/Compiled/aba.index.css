@@ -2,7 +2,7 @@
 /*#endregion*/
 /*#region Colors*/
 /*#endregion*/
-body.aba-page-index #main {
+body.aba-page-index #dropbox {
 				position: absolute;
 				top: 50%;
 				left: 50%;
@@ -10,11 +10,6 @@ body.aba-page-index #main {
 				max-width: 100%;
 				height: 400px;
 				transform: translate(-50%, -50%); }
-
-body.aba-page-index #dropbox {
-				position: relative;
-				width: 100%;
-				height: 100%; }
 				body.aba-page-index #dropbox #fileField {
 								position: absolute;
 								opacity: 0;
@@ -54,7 +49,7 @@ body.aba-page-index #dropbox {
 								left: 0;
 								width: 100%;
 								height: 100%;
-								background-color: #F0F0F0;
+								background-color: #F2F2F2;
 								border: 2px dashed #CACACA;
 								z-index: 3; }
 				body.aba-page-index #dropbox #uploadError {
@@ -65,17 +60,10 @@ body.aba-page-index #dropbox {
 								text-align: center;
 								z-index: 4; }
 
-body.aba-page-index footer {
+body.aba-page-index #testdrive {
 				position: absolute;
-				left: 0;
-				bottom: 0;
-				width: 100%;
-				height: auto; }
-				body.aba-page-index footer > p {
-								float: left;
-								margin: 0;
-								color: #F0F0F0;
-								line-height: 20px; }
-								body.aba-page-index footer > p > a {
-												color: #F0F0F0 !important; }
+				bottom: 20px;
+				left: 20px; }
+				body.aba-page-index #testdrive > p {
+								margin: 0; }
 

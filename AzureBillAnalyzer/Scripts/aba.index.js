@@ -62,16 +62,19 @@
 			formData = null,
 			files = null;
 
+		//Don't let browser try to handle the file
+		evt.stopPropagation();
+		evt.preventDefault();
+
+		//Clear any previous errors
+		this._$error.addClass('hidden');
+
+		//Called from manual file selection or drag & drop, check both event types to get the file
 		if ((evt.target.files) && (evt.target.files.length > 0)) {
 			files = evt.target.files;
 		} else if ((evt.originalEvent.dataTransfer.files) && (evt.originalEvent.dataTransfer.files.length > 0)) {
 			files = evt.originalEvent.dataTransfer.files;
 		}
-
-		this._$error.addClass('hidden');
-
-		evt.stopPropagation();
-		evt.preventDefault();
 
 		if (files === null) {
 			return;
@@ -118,7 +121,7 @@
 
 				_self._$progress.addClass('hidden');
 			} else if (result.success) {
-				window.location.href = "/dashboard/" + result.fileName.split(".")[0];
+				window.location.href = "/dashboard/" + result.file.split(".")[0];
 			}
 		});
 	}

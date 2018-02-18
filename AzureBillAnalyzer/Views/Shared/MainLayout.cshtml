@@ -13,27 +13,29 @@
 
 	<link rel="icon" type="image/png" href="~/Content/Images/Icons/AppIcon.png">
 
-	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Muli:400,800">
+	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Muli:200,400">
 	@(Styles.Render(MVCConfig.bundledStyles))
 	@(RenderSection("styles", false))
 </head>
-<body class="aba-page-@(Model.PageClass)">
-	<header>
-		<h1>Azure Bill Analyzer</h1>
-		<nav id="headerNav">
-			<a href="@(Url.Action("About", "Main"))">About</a>
-		</nav>
-		@(RenderSection("header", false))
-	</header>
+<body class="aba-page-@(Model.PageClass)" data-section="@(Model.PageSection)">
+	<nav id="mainNav" class="@(((Model.Session.NavDrawerOpen) ? "open" : ""))">
+		<h1 id="navHeader">Azure Bill Analyzer</h1>
+		<span id="hamburger"></span>
+		<ul>
+			<li id="navUpload" data-section="Index" data-href="@(Url.Action("Index", "Main"))">Upload File</li>
+			<li id="navDashboard" class="@(((Model.Session.CurrentFile.Equals(Guid.Empty)) ? "disabled" : ""))" data-section="Dashboard" data-href="@(Url.Action("Dashboard", "Main", new { file = Model.Session.CurrentFile }))">Dashboard</li>
+			<li id="navSharing" class="disabled" data-section="Sharing" data-href="@(Url.Action("Sharing", "Main"))">Sharing</li>
+			<li id="navArchive" class="disabled" data-section="Archive" data-href="@(Url.Action("Archive", "Main"))">Archive</li>
+			<li id="navAccount" class="disabled" data-section="Account" data-href="@(Url.Action("Account", "Main"))">Account</li>
+			<li id="navAbout" data-section="About" data-href="@(Url.Action("About", "Main"))">About</li>
+		</ul>
+	</nav>
 
 	<main id="main">
 		@(RenderSection("body"))
 	</main>
 
-	<footer class="clearfix">
-		@(RenderSection("footer", false))
-		<p id="copyright">©@(DateTime.Now.Year) Samuel Trimble</p>
-	</footer>
+	<span id="buildcopyright">Azure Bill Analyzer x@(ViewContext.Controller.GetType().Assembly.GetName().Version.ToString())<br>©@(DateTime.Now.Year) Samuel Trimble</span>
 
 	@(Scripts.Render(MVCConfig.bundledScripts))
 	@(RenderSection("scripts", false))

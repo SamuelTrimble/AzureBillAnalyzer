@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using AzureBillAnalyzer.Core;
 using AzureBillAnalyzer.Models;
+using System;
 using System.IO;
+using System.Web.Mvc;
 
 namespace AzureBillAnalyzer.Controllers {
 	public class MainController : Controller {
@@ -14,7 +12,9 @@ namespace AzureBillAnalyzer.Controllers {
 		[Route("")]
 		public ActionResult Index() {
 			MainViewModel mVM = new MainViewModel() {
-				PageClass = "index"
+				Session = ABASession.Get(),
+				PageClass = "index",
+				PageSection = "Index"
 			};
 			
 			return View(mVM);
@@ -24,7 +24,9 @@ namespace AzureBillAnalyzer.Controllers {
 		[Route("about")]
 		public ActionResult About() {
 			MainViewModel mVM = new MainViewModel() {
-				PageClass = "about"
+				Session = ABASession.Get(),
+				PageClass = "about",
+				PageSection = "About"
 			};
 
 			return View(mVM);
@@ -33,17 +35,11 @@ namespace AzureBillAnalyzer.Controllers {
 		[HttpGet]
 		[Route("dashboard/{file:guid}")]
 		public ActionResult Dashboard(Guid file) {
-			MainViewModel mVM = new MainViewModel() {
-				PageClass = "dashboard"
-			};
-
-			return View(mVM);
-		}
-		[HttpGet]
-		[Route("dashboard/example")]
-		public ActionResult Dashboard() {
-			MainViewModel mVM = new MainViewModel() {
-				PageClass = "dashboard"
+			DashboardViewModel mVM = new DashboardViewModel() {
+				Session = ABASession.Get(),
+				PageClass = "dashboard",
+				PageSection = "Dashboard",
+				BillFile = file
 			};
 
 			return View(mVM);
