@@ -35,12 +35,14 @@ namespace AzureBillAnalyzer.Controllers {
 		[HttpGet]
 		[Route("dashboard/{file:guid}")]
 		public ActionResult Dashboard(Guid file) {
-			DashboardViewModel mVM = new DashboardViewModel() {
+			MainViewModel mVM = new MainViewModel() {
 				Session = ABASession.Get(),
 				PageClass = "dashboard",
-				PageSection = "Dashboard",
-				BillFile = file
+				PageSection = "Dashboard"
 			};
+
+			mVM.Session.CurrentFile = file;
+			ABASession.Set(mVM.Session);
 
 			return View(mVM);
 		}

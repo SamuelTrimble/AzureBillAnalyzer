@@ -7,8 +7,4 @@ namespace AzureBillAnalyzer.Models {
 		public string PageClass { get; set; }
 		public string PageSection { get; set; }
 	}
-
-	public class DashboardViewModel : MainViewModel {
-		public Guid BillFile { get; set; }
-	}
 }

@@ -2,4 +2,7 @@
 /*#endregion*/
 /*#region Colors*/
 /*#endregion*/
+body.aba-page-dashboard #dashboard {
+				width: 100%;
+				min-height: 100%; }
 
