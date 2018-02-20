@@ -1,5 +1,4 @@
 ﻿using AzureBillAnalyzer.Core;
-using System;
 
 namespace AzureBillAnalyzer.Models {
 	public class MainViewModel {

@@ -111,7 +111,6 @@
 			processData: false,
 			contentType: false
 		}).done(function(result, statusText, jqXHR) {
-			console.log(result);
 			if (result.error) {
 				_self._$form[0].reset();
 

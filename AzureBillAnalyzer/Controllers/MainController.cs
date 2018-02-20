@@ -1,7 +1,11 @@
 ﻿using AzureBillAnalyzer.Core;
 using AzureBillAnalyzer.Models;
+using Microsoft.VisualBasic.FileIO;
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace AzureBillAnalyzer.Controllers {
@@ -82,6 +86,143 @@ namespace AzureBillAnalyzer.Controllers {
 				success = true,
 				file = fileName
 			});
+		}
+		#endregion
+
+		#region Data
+		[HttpPost]
+		[Route("processfile")]
+		public ActionResult ProcessCurrentFile() {
+			ABASessionData sData = ABASession.Get();
+			AzureFileData data = new AzureFileData {
+				Subscriptions = new List<AzureSubscription>(),
+				Services = new List<AzureService>(),
+				ResourceGroups = new List<AzureResourceGroup>(),
+				Items = new List<AzureDayItem>()
+			};
+			AzureFileSection section = AzureFileSection.None;
+
+			try {
+				using (TextFieldParser parser = new TextFieldParser(Server.MapPath("~/Content/Uploads/" + sData.CurrentFile.ToString() + ".csv"))) {
+					parser.SetDelimiters(new string[] { "," });
+					parser.HasFieldsEnclosedInQuotes = true;
+
+					while (!parser.EndOfData) {
+						string[] rowData = parser.ReadFields();
+
+						//Kill all extra quotes in cells
+						for (int idx = 0; idx < rowData.Length; idx++) {
+							rowData[idx] = rowData[idx].Replace("\"", "");
+						}
+
+						//Handle empty lines and switching to different modes
+						switch (rowData[0]) {
+							case "":
+								//Empty line, continue to next
+								continue;
+							case "Provisioning Status":
+								//Switch to reading subscriptions
+								section = AzureFileSection.Subscriptions;
+								//Skip header row
+								parser.ReadFields();
+								//Continue to subscription data
+								continue;
+							case "Statement":
+								//Switch to reading services
+								section = AzureFileSection.Services;
+								//Skip header row
+								parser.ReadFields();
+								//Continue to service data
+								continue;
+							case "Daily Usage":
+								//Switch to reading day items
+								section = AzureFileSection.Items;
+								//Skip header row
+								parser.ReadFields();
+								//Continue to day item data
+								continue;
+						}
+
+						//Parse the current line based on what section we're currently in
+						switch (section) {
+							case AzureFileSection.Subscriptions:
+								AzureSubscription newSub = new AzureSubscription {
+									Id = Guid.Parse(rowData[(int)AzureSubscriptionColumns.Id]),
+									Name = rowData[(int)AzureSubscriptionColumns.Name],
+									Description = rowData[(int)AzureSubscriptionColumns.Description]
+								};
+								data.Subscriptions.Add(newSub);
+								break;
+							case AzureFileSection.Services:
+								AzureService newService = new AzureService {
+									Id = Guid.Empty, //Don't know this yet. For some reason the daily items have a service id but this doesn't, so fill it out later
+									Name = rowData[(int)AzureServiceColumns.Name],
+									Category = rowData[(int)AzureServiceColumns.Category],
+									Subcategory = rowData[(int)AzureServiceColumns.SubCategory],
+									Region = rowData[(int)AzureServiceColumns.Region],
+									UnitType = rowData[(int)AzureServiceColumns.UnitType],
+									TotalConsumedQuantity = decimal.Parse(rowData[(int)AzureServiceColumns.TotalConsumedQuantity]),
+									IncludedQuantity = decimal.Parse(rowData[(int)AzureServiceColumns.IncludedQuantity]),
+									WithinCommitmentQuantity = decimal.Parse(rowData[(int)AzureServiceColumns.WithinCommitmentQuantity]),
+									OverageQuantity = decimal.Parse(rowData[(int)AzureServiceColumns.OverageQuantity]),
+									CommitmentRate = decimal.Parse(rowData[(int)AzureServiceColumns.CommitmentRate]),
+									OverageRate = decimal.Parse(rowData[(int)AzureServiceColumns.OverageRate]),
+									TotalCost = 0m
+								};
+								//Kinda guessing here. Personally never used the 'commitment' so not sure on how it's charged
+								newService.TotalCost = ((newService.WithinCommitmentQuantity * newService.CommitmentRate) + (newService.OverageQuantity * newService.OverageRate));
+
+								data.Services.Add(newService);
+								break;
+							case AzureFileSection.Items:
+								AzureDayItem newItem = new AzureDayItem {
+									ServiceId = Guid.Parse(rowData[(int)AzureDayItemColumns.ServiceId]),
+									Date = DateTime.ParseExact(rowData[(int)AzureDayItemColumns.Date], "M/d/yyyy", CultureInfo.InvariantCulture),
+									InstanceId = rowData[(int)AzureDayItemColumns.ItemInstanceId],
+									Consumed = decimal.Parse(rowData[(int)AzureDayItemColumns.ItemConsumedQuantity])
+								};
+
+								//Find corresponding service, back-fill service ids as needed
+								AzureService itemService = data.Services.SingleOrDefault(s => s.Id.Equals(newItem.ServiceId));
+								if (itemService == null) {
+									string name = rowData[(int)AzureDayItemColumns.ServiceName],
+											category = rowData[(int)AzureDayItemColumns.ServiceCategory],
+											subCategory = rowData[(int)AzureDayItemColumns.ServiceSubCategory],
+											region = rowData[(int)AzureDayItemColumns.ServiceRegion];
+									int idx = data.Services.FindIndex(s => (
+																(s.Name.Equals(name, StringComparison.OrdinalIgnoreCase)) &&
+																(s.Category.Equals(category, StringComparison.OrdinalIgnoreCase)) &&
+																(s.Subcategory.Equals(subCategory, StringComparison.OrdinalIgnoreCase)) &&
+																(s.Region.Equals(region, StringComparison.OrdinalIgnoreCase))));
+
+									if (idx != -1) {
+										data.Services[idx].Id = newItem.ServiceId;
+										itemService = data.Services[idx];
+									}
+								}
+
+								//Find corresponding resource group, create it if needed
+								string groupName = rowData[(int)AzureDayItemColumns.ItemResourceGroupName];
+								AzureResourceGroup itemGroup = data.ResourceGroups.SingleOrDefault(g => (g.Name.Equals(groupName, StringComparison.OrdinalIgnoreCase)));
+								if (itemGroup == null) {
+									itemGroup = new AzureResourceGroup {
+										Id = Guid.NewGuid(),
+										Name = groupName
+									};
+									data.ResourceGroups.Add(itemGroup);
+								}
+								newItem.ResourceGroupId = itemGroup.Id;
+
+								data.Items.Add(newItem);
+								break;
+						}
+					}
+				}
+			} catch (Exception ex) {
+				return ErrorJson("CSV Error", "There was an error parsing the supplied .csv file: " + ex.Message);
+			}
+
+			return Json(data);
 		}
 		#endregion
 
