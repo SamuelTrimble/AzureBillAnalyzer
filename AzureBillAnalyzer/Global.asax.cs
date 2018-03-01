@@ -1,5 +1,6 @@
 ﻿using AzureBillAnalyzer.Core;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Web;
 using System.Web.Mvc;
@@ -27,7 +28,7 @@ namespace AzureBillAnalyzer {
 
 			//If the session user uploaded a custom file, delete it when the session ends
 			if (!sData.CurrentFile.Equals(Guid.Empty)) {
-				string path = Server.MapPath("~/Content/Uploads" + sData.CurrentFile.ToString() + ".csv");
+				string path = System.Web.Hosting.HostingEnvironment.MapPath("~/Content/Uploads" + sData.CurrentFile.ToString() + ".csv");
 				if (File.Exists(path)) {
 					File.Delete(path);
 				}
@@ -48,6 +49,17 @@ namespace AzureBillAnalyzer {
 					Response.Status = "301 Moved Permanently";
 					Response.AddHeader("Location", path);
 					break;
+			}
+#endif
+		}
+
+		protected void Application_EndRequest() {
+#if DEBUG
+			//Debug '500 Internal Server Error' events here...
+			if (this.Context.AllErrors != null) {
+				foreach (Exception ex in this.Context.AllErrors) {
+					Debug.Write("500 ERROR: " + ex.ToString());
+				}
 			}
 #endif
 		}

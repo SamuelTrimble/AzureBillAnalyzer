@@ -9,6 +9,7 @@ class ABA_Main {
 		this._$window = $(window);
 		this._$document = $(document);
 		this._$body = $('body');
+		this._$main = $('#main');
 
 		this._$nav = $('#mainNav');
 
@@ -45,6 +46,10 @@ class ABA_Main {
 			cache: false,
 			contentType: "application/json; charset=utf-8"
 		});
+	}
+
+	BuildInlineErrorMessage(title, message) {
+		return "<h2 class='error'>" + title + "</h2><p class='error'>" + message + "</p>";
 	}
 }
 

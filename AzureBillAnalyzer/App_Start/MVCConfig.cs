@@ -21,6 +21,8 @@ namespace AzureBillAnalyzer {
 		public static void RegisterBundles(BundleCollection bundles) {
 			bundles.Add(new ScriptBundle(bundledScripts).Include(
 				"~/Libraries/jQuery/jquery-3.3.1.min.js",
+				"~/Libraries/Chart/chartjs.bundle-2.7.1.min.js",
+				"~/Libraries/decimal/decimal.light-2.3.1.min.js",
 				"~/Scripts/aba.main.js",
 				"~/Scripts/aba.index.js",
 				"~/Scripts/aba.dashboard.js",

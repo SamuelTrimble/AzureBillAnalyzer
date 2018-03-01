@@ -134,6 +134,8 @@
     <Content Include="Content\Images\Icons\nav-upload.svg" />
     <Content Include="Content\Images\Icons\upload.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Libraries\Chart\chartjs.bundle-2.7.1.min.js" />
+    <Content Include="Libraries\decimal\decimal.light-2.3.1.min.js" />
     <Content Include="Libraries\jQuery\jquery-3.3.1.min.js" />
     <Content Include="Scripts\aba.about.js" />
     <Content Include="Scripts\aba.error.js" />

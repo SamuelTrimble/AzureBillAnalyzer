@@ -115,7 +115,7 @@ namespace AzureBillAnalyzer.Controllers {
 							rowData[idx] = rowData[idx].Replace("\"", "");
 						}
 
-						//Handle empty lines and switching to different modes
+						//Handle empty lines and switching to different sections
 						switch (rowData[0]) {
 							case "":
 								//Empty line, continue to next

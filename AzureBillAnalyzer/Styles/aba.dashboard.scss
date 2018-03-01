@@ -1,8 +1,82 @@
 ﻿@import '_variables.scss';
 
 body.aba-page-dashboard {
+	#overview {
+		#overview-total {
+			margin-top: 0;
+
+			font-size: 2rem;
+			@include font-normal();
+
+			small {
+				font-size: 1rem;
+			}
+		}
+
+		.dividedHeader {
+			margin: 2rem 0 0 0;
+
+			border-bottom: 1px solid $blue;
+		}
+
+		ul {
+			margin: 0 0 0 20px;
+			padding: 0;
+			list-style: none;
+		}
+
+		#subscriptionList {
+			width: 800px;
+			max-width: 100%;
+
+			.subscriptionRow {
+				display: grid;
+				grid-template-columns: repeat(4, 25%);
+				margin: 4px 0;
+
+				.subscriptionCol {
+					grid-column-end: span 1;
+
+					white-space: nowrap;
+					text-overflow: ellipsis;
+					overflow: hidden;
+
+					&.id {
+						grid-column-end: span 2;
+					}
+					&.cost {
+						text-align: right;
+					}
+				}
+			}
+		}
+		#groupList {
+			width: 800px;
+			max-width: 100%;
+
+			.groupRow {
+				display: grid;
+				grid-template-columns: repeat(4, 25%);
+				margin: 4px 0;
+
+				.groupCol {
+					grid-column-end: span 1;
+
+					white-space: nowrap;
+					text-overflow: ellipsis;
+					overflow: hidden;
+
+					&.id {
+						grid-column-end: span 2;
+					}
+					&.cost {
+						text-align: right;
+					}
+				}
+			}
+		}
+	}
 	#dashboard {
-		width: 100%;
-		min-height: 100%;
+		
 	}
 }

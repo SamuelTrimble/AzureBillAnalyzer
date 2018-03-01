@@ -81,7 +81,7 @@
 		}
 		if (files.length > 1) {
 			this._$error
-				.text("only 1 file please")
+				.text("Only 1 file at a time please")
 				.removeClass('hidden');
 			return;
 		}
@@ -92,7 +92,7 @@
 				break;
 			default:
 				this._$error
-					.text("only .csv bills from Azure please")
+					.text("Only .csv bills from Azure please")
 					.removeClass('hidden');
 				return;
 		}
