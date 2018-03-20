@@ -49,7 +49,7 @@ class ABA_Main {
 	}
 
 	BuildInlineErrorMessage(title, message) {
-		return "<h2 class='error'>" + title + "</h2><p class='error'>" + message + "</p>";
+		return `<h2 class='error'>${title}</h2><p class='error'>${message}</p>`;
 	}
 }
 

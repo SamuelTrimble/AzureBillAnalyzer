@@ -20,54 +20,33 @@ body.aba-page-dashboard {
 		}
 
 		ul {
-			margin: 0 0 0 20px;
-			padding: 0;
+			margin: 0;
+			padding: 0 0 0 20px;
 			list-style: none;
 		}
 
-		#subscriptionList {
-			width: 800px;
-			max-width: 100%;
+		.overviewList {
+			width: 100%;
 
-			.subscriptionRow {
+			> .listRow {
 				display: grid;
-				grid-template-columns: repeat(4, 25%);
+				grid-template-columns: repeat(10, 10%);
 				margin: 4px 0;
 
-				.subscriptionCol {
-					grid-column-end: span 1;
-
-					white-space: nowrap;
-					text-overflow: ellipsis;
-					overflow: hidden;
-
-					&.id {
-						grid-column-end: span 2;
-					}
-					&.cost {
-						text-align: right;
-					}
+				&:hover {
+					background-color: $grey;
 				}
-			}
-		}
-		#groupList {
-			width: 800px;
-			max-width: 100%;
 
-			.groupRow {
-				display: grid;
-				grid-template-columns: repeat(4, 25%);
-				margin: 4px 0;
-
-				.groupCol {
+				> .listCol {
 					grid-column-end: span 1;
 
 					white-space: nowrap;
 					text-overflow: ellipsis;
 					overflow: hidden;
 
-					&.id {
-						grid-column-end: span 2;
+					&.id,
+					&.name {
+						grid-column-end: span 3;
 					}
 					&.cost {
 						text-align: right;

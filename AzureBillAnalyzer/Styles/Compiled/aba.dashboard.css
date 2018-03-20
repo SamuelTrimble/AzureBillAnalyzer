@@ -15,41 +15,25 @@ body.aba-page-dashboard #overview .dividedHeader {
 				border-bottom: 1px solid #276CB9; }
 
 body.aba-page-dashboard #overview ul {
-				margin: 0 0 0 20px;
-				padding: 0;
+				margin: 0;
+				padding: 0 0 0 20px;
 				list-style: none; }
 
-body.aba-page-dashboard #overview #subscriptionList {
-				width: 800px;
-				max-width: 100%; }
-				body.aba-page-dashboard #overview #subscriptionList .subscriptionRow {
+body.aba-page-dashboard #overview .overviewList {
+				width: 100%; }
+				body.aba-page-dashboard #overview .overviewList > .listRow {
 								display: grid;
-								grid-template-columns: repeat(4, 25%);
+								grid-template-columns: repeat(10, 10%);
 								margin: 4px 0; }
-								body.aba-page-dashboard #overview #subscriptionList .subscriptionRow .subscriptionCol {
+								body.aba-page-dashboard #overview .overviewList > .listRow:hover {
+												background-color: #CACACA; }
+								body.aba-page-dashboard #overview .overviewList > .listRow > .listCol {
 												grid-column-end: span 1;
 												white-space: nowrap;
 												text-overflow: ellipsis;
 												overflow: hidden; }
-												body.aba-page-dashboard #overview #subscriptionList .subscriptionRow .subscriptionCol.id {
-																grid-column-end: span 2; }
-												body.aba-page-dashboard #overview #subscriptionList .subscriptionRow .subscriptionCol.cost {
-																text-align: right; }
-
-body.aba-page-dashboard #overview #groupList {
-				width: 800px;
-				max-width: 100%; }
-				body.aba-page-dashboard #overview #groupList .groupRow {
-								display: grid;
-								grid-template-columns: repeat(4, 25%);
-								margin: 4px 0; }
-								body.aba-page-dashboard #overview #groupList .groupRow .groupCol {
-												grid-column-end: span 1;
-												white-space: nowrap;
-												text-overflow: ellipsis;
-												overflow: hidden; }
-												body.aba-page-dashboard #overview #groupList .groupRow .groupCol.id {
-																grid-column-end: span 2; }
-												body.aba-page-dashboard #overview #groupList .groupRow .groupCol.cost {
+												body.aba-page-dashboard #overview .overviewList > .listRow > .listCol.id, body.aba-page-dashboard #overview .overviewList > .listRow > .listCol.name {
+																grid-column-end: span 3; }
+												body.aba-page-dashboard #overview .overviewList > .listRow > .listCol.cost {
 																text-align: right; }
 
