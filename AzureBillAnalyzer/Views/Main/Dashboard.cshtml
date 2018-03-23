@@ -4,9 +4,32 @@
 }
 
 @section body {
-	<section id="overview">
-		<h1 id="overview-total"></h1>
+	<section id="dashboard">
+		<h1 id="dashboard-total"></h1>
 
+		<div id="dashboard-monthGroupingDropdown" class="aba_popupListSelectorWithLabel" data-grouping="Subscriptions">
+			<label>Group by: Resource Groups</label>
+			<div class="aba_popupListSelector">
+				<ul class="aba_popupList anchorRight">
+					<!--<li data-grouping="Subscriptions">Subscriptions</li>-->
+					<li class="active" data-grouping="Resource Groups">Resource Groups</li>
+					<li data-grouping="Services">Services</li>
+				</ul>
+			</div>
+		</div>
+		<div id="dashboard-monthGraphContainer">
+			<canvas id="dashboard-monthGraph"></canvas>
+		</div>
+		
+		<div id="dashboard-groupTotalGraphContainer">
+			<canvas id="dashboard-groupTotalGraph"></canvas>
+		</div>
+			
+		<div id="dashboard-serviceTotalGraphContainer">
+			<canvas id="dashboard-serviceTotalGraph"></canvas>
+		</div>
+	</section>
+	<section id="overview">
 		<h2 class="dividedHeader">Subscriptions</h2>
 		<ul id="subscriptionList" class="overviewList"></ul>
 
@@ -15,8 +38,5 @@
 
 		<h2 class="dividedHeader">Services</h2>
 		<ul id="serviceList" class="overviewList"></ul>
-	</section>
-	<section id="dashboard">
-
 	</section>
 }

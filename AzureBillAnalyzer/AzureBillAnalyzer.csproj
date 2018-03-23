@@ -122,6 +122,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Images\Icons\AppIcon.png" />
+    <Content Include="Content\Images\Icons\arrow-down.svg" />
+    <Content Include="Content\Images\Icons\checkbox.png" />
     <Content Include="Content\Images\Icons\download.svg" />
     <Content Include="Content\Images\Icons\ErrorIcon.png" />
     <Content Include="Content\Images\Icons\loading.svg" />

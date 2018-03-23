@@ -2,38 +2,62 @@
 /*#endregion*/
 /*#region Colors*/
 /*#endregion*/
-body.aba-page-dashboard #overview #overview-total {
+body.aba-page-dashboard .dividedHeader {
+				margin: 2rem 0 0 0;
+				border-bottom: 1px solid #276CB9; }
+
+body.aba-page-dashboard #dashboard #dashboard-total {
 				margin-top: 0;
 				font-size: 2rem;
 				font-family: Muli, Verdana, sans-serif;
 				font-weight: 400; }
-				body.aba-page-dashboard #overview #overview-total small {
+				body.aba-page-dashboard #dashboard #dashboard-total small {
 								font-size: 1rem; }
 
-body.aba-page-dashboard #overview .dividedHeader {
-				margin: 2rem 0 0 0;
-				border-bottom: 1px solid #276CB9; }
+body.aba-page-dashboard #dashboard #dashboard-monthGroupingDropdown {
+				float: right; }
 
-body.aba-page-dashboard #overview ul {
-				margin: 0;
-				padding: 0 0 0 20px;
-				list-style: none; }
+body.aba-page-dashboard #dashboard #dashboard-monthGraphContainer {
+				clear: both;
+				position: relative;
+				margin-bottom: 40px;
+				width: 100%;
+				height: 800px; }
 
-body.aba-page-dashboard #overview .overviewList {
-				width: 100%; }
-				body.aba-page-dashboard #overview .overviewList > .listRow {
-								display: grid;
-								grid-template-columns: repeat(10, 10%);
-								margin: 4px 0; }
-								body.aba-page-dashboard #overview .overviewList > .listRow:hover {
-												background-color: #CACACA; }
-								body.aba-page-dashboard #overview .overviewList > .listRow > .listCol {
-												grid-column-end: span 1;
-												white-space: nowrap;
-												text-overflow: ellipsis;
-												overflow: hidden; }
-												body.aba-page-dashboard #overview .overviewList > .listRow > .listCol.id, body.aba-page-dashboard #overview .overviewList > .listRow > .listCol.name {
-																grid-column-end: span 3; }
-												body.aba-page-dashboard #overview .overviewList > .listRow > .listCol.cost {
-																text-align: right; }
+body.aba-page-dashboard #dashboard #dashboard-groupTotalGraphContainer,
+body.aba-page-dashboard #dashboard #dashboard-serviceTotalGraphContainer {
+				float: left;
+				position: relative;
+				margin-bottom: 40px;
+				width: 50%;
+				height: 400px; }
+
+body.aba-page-dashboard #dashboard:after {
+				display: block;
+				clear: both;
+				content: ''; }
+
+body.aba-page-dashboard #overview {
+				margin-bottom: 100px; }
+				body.aba-page-dashboard #overview ul {
+								margin: 0;
+								padding: 0 0 0 20px;
+								list-style: none; }
+				body.aba-page-dashboard #overview .overviewList {
+								width: 100%; }
+								body.aba-page-dashboard #overview .overviewList > .listRow {
+												display: grid;
+												grid-template-columns: repeat(10, 10%);
+												margin: 4px 0; }
+												body.aba-page-dashboard #overview .overviewList > .listRow:hover {
+																background-color: #CACACA; }
+												body.aba-page-dashboard #overview .overviewList > .listRow > .listCol {
+																grid-column-end: span 1;
+																white-space: nowrap;
+																text-overflow: ellipsis;
+																overflow: hidden; }
+																body.aba-page-dashboard #overview .overviewList > .listRow > .listCol.id, body.aba-page-dashboard #overview .overviewList > .listRow > .listCol.name {
+																				grid-column-end: span 3; }
+																body.aba-page-dashboard #overview .overviewList > .listRow > .listCol.cost {
+																				text-align: right; }
 

@@ -46,6 +46,68 @@ h1, h2, h3, h4, h5 {
 				height: 64px;
 				width: auto; }
 
+.aba_popupListSelectorWithLabel {
+				display: inline-block;
+				position: relative;
+				cursor: pointer; }
+				.aba_popupListSelectorWithLabel > label {
+								float: left;
+								cursor: pointer;
+								font-size: 1rem; }
+				.aba_popupListSelectorWithLabel:hover .aba_popupList,
+				.aba_popupListSelectorWithLabel:active .aba_popupList {
+								display: block; }
+				.aba_popupListSelectorWithLabel > .aba_popupListSelector {
+								display: inline-block;
+								position: relative;
+								margin: 3px 0 0 10px;
+								padding: 0;
+								width: 16px;
+								height: 16px;
+								background: url(/Content/Images/Icons/arrow-down.svg) center center no-repeat;
+								background-size: contain; }
+				.aba_popupListSelectorWithLabel .aba_popupList {
+								display: none;
+								position: absolute;
+								margin: 0;
+								padding: 0;
+								top: 0;
+								list-style: none;
+								font-size: 1rem;
+								background-color: #FFFFFF;
+								border: 1px solid #CACACA;
+								border-radius: 5px;
+								box-shadow: -1px -1px 5px 2px rgba(202, 202, 202, 0.5);
+								z-index: 100; }
+								.aba_popupListSelectorWithLabel .aba_popupList.anchorLeft {
+												left: 0;
+												right: auto;
+												text-align: left; }
+												.aba_popupListSelectorWithLabel .aba_popupList.anchorLeft > li.active:after {
+																left: 5px;
+																right: auto; }
+								.aba_popupListSelectorWithLabel .aba_popupList.anchorRight {
+												left: auto;
+												right: 0;
+												text-align: right; }
+												.aba_popupListSelectorWithLabel .aba_popupList.anchorRight > li.active:after {
+																left: auto;
+																right: 5px; }
+								.aba_popupListSelectorWithLabel .aba_popupList > li {
+												position: relative;
+												padding: 8px 20px;
+												color: #262626;
+												white-space: nowrap; }
+												.aba_popupListSelectorWithLabel .aba_popupList > li:hover {
+																background-color: #CACACA; }
+												.aba_popupListSelectorWithLabel .aba_popupList > li.active:after {
+																position: absolute;
+																top: 0;
+																color: #276CB9;
+																content: '\b7';
+																font-size: 3rem;
+																line-height: 26px; }
+
 #mainNav {
 				position: fixed;
 				top: 0;
@@ -162,11 +224,13 @@ h1, h2, h3, h4, h5 {
 
 #buildcopyright {
 				position: fixed;
-				padding-right: 5px;
-				bottom: 0;
-				right: 0;
+				padding: 10px;
+				bottom: 20px;
+				right: 20px;
 				color: #262626;
 				font-size: 0.875rem;
 				line-height: 1.4em;
-				text-align: right; }
+				text-align: right;
+				background-color: #FFFFFF;
+				border-radius: 5px; }
 

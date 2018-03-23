@@ -1,8 +1,14 @@
 ﻿@import '_variables.scss';
 
 body.aba-page-dashboard {
-	#overview {
-		#overview-total {
+	.dividedHeader {
+		margin: 2rem 0 0 0;
+
+		border-bottom: 1px solid $blue;
+	}
+
+	#dashboard {
+		#dashboard-total {
 			margin-top: 0;
 
 			font-size: 2rem;
@@ -13,11 +19,36 @@ body.aba-page-dashboard {
 			}
 		}
 
-		.dividedHeader {
-			margin: 2rem 0 0 0;
-
-			border-bottom: 1px solid $blue;
+		#dashboard-monthGroupingDropdown {
+			float: right;
 		}
+
+		#dashboard-monthGraphContainer {
+			clear: both;
+			position: relative;
+			margin-bottom: 40px;
+			width: 100%;
+			height: 800px;
+		}
+		#dashboard-groupTotalGraphContainer,
+		#dashboard-serviceTotalGraphContainer {
+			float: left;
+			position: relative;
+			margin-bottom: 40px;
+			width: 50%;
+			height: 400px;
+		}
+
+		&:after {
+			display: block;
+			clear: both;
+
+			content: '';
+		}
+	}
+
+	#overview {
+		margin-bottom: 100px;
 
 		ul {
 			margin: 0;
@@ -54,8 +85,5 @@ body.aba-page-dashboard {
 				}
 			}
 		}
-	}
-	#dashboard {
-		
 	}
 }
