@@ -129,8 +129,6 @@
 			type: 'POST',
 			cache: false
 		}).done((result, statusText, jqXHR) => {
-			console.log(result);
-
 			if (result.error) {
 				this._$dashboard.append(_self.BuildInlineErrorMessage(result.error, result.errorMessage));
 				this._$dashboard.append("<p class='error'>Make sure to upload a valid v2 Azure csv bill.</p>");

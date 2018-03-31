@@ -100,10 +100,11 @@ namespace AzureBillAnalyzer.Controllers {
 				ResourceGroups = new List<AzureResourceGroup>(),
 				Items = new List<AzureDayItem>()
 			};
+			string currentFilePath = Server.MapPath("~/Content/Uploads/" + sData.CurrentFile.ToString() + ".csv");
 			AzureFileSection section = AzureFileSection.None;
 
 			try {
-				using (TextFieldParser parser = new TextFieldParser(Server.MapPath("~/Content/Uploads/" + sData.CurrentFile.ToString() + ".csv"))) {
+				using (TextFieldParser parser = new TextFieldParser(currentFilePath)) {
 					parser.SetDelimiters(new string[] { "," });
 					parser.HasFieldsEnclosedInQuotes = true;
 
@@ -218,10 +219,24 @@ namespace AzureBillAnalyzer.Controllers {
 						}
 					}
 				}
+
+				//If the user uploaded a custom file, delete it now that we're done parsing it
+				if (!sData.CurrentFile.Equals(Guid.Empty)) {
+					if (System.IO.File.Exists(currentFilePath)) {
+						System.IO.File.Delete(currentFilePath);
+					}
+				}
 			} catch (Exception ex) {
+				//If the user uploaded a custom file, delete it now that we're done parsing it
+				if (!sData.CurrentFile.Equals(Guid.Empty)) {
+					if (System.IO.File.Exists(currentFilePath)) {
+						System.IO.File.Delete(currentFilePath);
+					}
+				}
+
 				return ErrorJson("CSV Error", "There was an error parsing the supplied .csv file: " + ex.Message);
 			}
-
+			
 			return Json(data);
 		}
 		#endregion
