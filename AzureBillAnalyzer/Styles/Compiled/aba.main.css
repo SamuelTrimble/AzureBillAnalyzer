@@ -20,6 +20,9 @@ h1, h2, h3, h4, h5 {
 				font-family: Muli, Verdana, sans-serif;
 				font-weight: 200; }
 
+a, a:visited, a:active, a:hover {
+				color: #276CB9; }
+
 .monofont {
 				font-family: monospace;
 				font-size: 1.2rem; }
@@ -229,7 +232,7 @@ h1, h2, h3, h4, h5 {
 				right: 20px;
 				color: #262626;
 				font-size: 0.875rem;
-				line-height: 1.4em;
+				line-height: 1.2em;
 				text-align: right;
 				background-color: #FFFFFF;
 				border-radius: 5px; }

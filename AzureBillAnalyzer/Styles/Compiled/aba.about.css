@@ -2,4 +2,12 @@
 /*#endregion*/
 /*#region Colors*/
 /*#endregion*/
+body.aba-page-about h1 {
+				font-size: 2rem; }
+
+body.aba-page-about .dividedHeader {
+				margin: 0;
+				border-bottom: 1px solid #276CB9; }
+				body.aba-page-about .dividedHeader:not(:first-child) {
+								margin-top: 2rem; }
 

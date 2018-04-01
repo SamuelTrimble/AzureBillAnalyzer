@@ -35,7 +35,7 @@
 		@(RenderSection("body"))
 	</main>
 
-	<span id="buildcopyright">Azure Bill Analyzer x@(ViewContext.Controller.GetType().Assembly.GetName().Version.ToString())<br>©@(DateTime.Now.Year) Samuel Trimble</span>
+	<span id="buildcopyright">Azure Bill Analyzer x@(ViewContext.Controller.GetType().Assembly.GetName().Version.ToString())</span>
 
 	@(Scripts.Render(MVCConfig.bundledScripts))
 	@(RenderSection("scripts", false))

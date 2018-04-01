@@ -1,8 +1,33 @@
 ﻿@model MainViewModel
 @{
-	
+
 }
 
 @section body {
-	
+	<section id="about">
+		<h1 class="dividedHeader">Azure Bill Analyzer</h1>
+		<p>The Azure Bill Analyzer is a visual dashboard that processes .csv bills from Azure in order to see cost breakdowns by services used, resource groups, and time.</p>
+
+		<h2 class="dividedHeader">Features</h2>
+		<ul>
+			<li><strong>Daily cost breakdown</strong> - See total costs* by day for either resource groups or services used.</li>
+			<li><strong>Resource group costs</strong> - See resource groups total costs* compared to each other.</li>
+			<li><strong>Service costs</strong> - See service total costs* compared to each other.</li>
+		</ul>
+		<p><small>*All costs are pre-tax figures.</small></p>
+
+		<h2 class="dividedHeader">Coming Soon</h2>
+		<ul>
+			<li><strong>Get more specific</strong> - Turn on/off specific resource groups and/or services to show in the daily breakdown and compare exactly the ones you want at any time.</li>
+			<li><strong>Get remembered</strong> - With a personal and/or company account you'll be able to keep records of previous bills and analyze usage patterns.</li>
+			<li><strong>Get social</strong> - Invite team members to see breakdowns defaulted to the view selections you set.</li>
+		</ul>
+		<p>Follow along with our development progress on <a href="https://github.com/SamuelTrimble/AzureBillAnalyzer" target="_blank">GitHub</a>.</p>
+
+		<h2 class="dividedHeader">License &amp; Usage</h2>
+		<p>The full Azure Bill Analyzer source is available under the <a href="https://github.com/SamuelTrimble/AzureBillAnalyzer/blob/master/LICENSE">MIT license</a>. You're free to download the full source and host it yourself or modify it to suit your own needs.</p>
+
+		<h2 class="dividedHeader">Questions?</h2>
+		<p>Feel free to contact us: <a href="mailto:contact@azurebillanalyzer.com" target="_blank">contact@azurebillanalyzer.com</a></p>
+	</section>
 }

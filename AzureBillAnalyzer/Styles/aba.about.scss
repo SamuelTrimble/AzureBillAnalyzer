@@ -1,5 +1,16 @@
 ﻿@import '_variables.scss';
 
 body.aba-page-about {
-	
+	h1 {
+		font-size: 2rem;
+	}
+
+	.dividedHeader {
+		margin: 0;
+		&:not(:first-child) {
+			margin-top: 2rem;
+		}
+
+		border-bottom: 1px solid $blue;
+	}
 }
