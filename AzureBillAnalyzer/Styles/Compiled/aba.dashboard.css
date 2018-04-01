@@ -21,16 +21,14 @@ body.aba-page-dashboard #dashboard #dashboard-monthGraphContainer {
 				clear: both;
 				position: relative;
 				margin-bottom: 40px;
-				width: 100%;
-				height: 800px; }
+				width: 100%; }
 
 body.aba-page-dashboard #dashboard #dashboard-groupTotalGraphContainer,
 body.aba-page-dashboard #dashboard #dashboard-serviceTotalGraphContainer {
 				float: left;
 				position: relative;
 				margin-bottom: 40px;
-				width: 50%;
-				height: 400px; }
+				width: 50%; }
 
 body.aba-page-dashboard #dashboard:after {
 				display: block;

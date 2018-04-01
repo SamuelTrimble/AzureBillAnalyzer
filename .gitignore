@@ -7,6 +7,7 @@ Thumbs.db
 *.vs
 bin/
 obj/
+*.pubxml
 
 Uploads/*
 !Uploads/00000000-0000-0000-0000-000000000000.csv

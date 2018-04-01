@@ -170,6 +170,7 @@
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
     </None>
+    <Content Include="Content\Uploads\00000000-0000-0000-0000-000000000000.csv" />
     <None Include="packages.config" />
     <Content Include="Styles\aba.main.scss" />
     <Content Include="Styles\_variables.scss" />
@@ -180,6 +181,7 @@
     <Content Include="Styles\aba.error.scss" />
     <Content Include="Styles\aba.about.scss" />
     <Content Include="Styles\aba.dashboard.scss" />
+    <None Include="Properties\PublishProfiles\azurebillanalyzer.com - Web Deploy.pubxml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
