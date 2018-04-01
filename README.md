@@ -15,7 +15,8 @@ Head on over to [https://www.azurebillanalyzer.com/](https://www.azurebillanalyz
 * **Daily cost breakdown** - See total costs* by day for either resource groups or services used.
 * **Resource group costs** - See resource groups total costs* compared to each other.
 * **Service costs** - See service total costs* compared to each other.
-*All costs are pre-tax figures.*
+
+&ast;*All costs are pre-tax figures.*
 
 <br>
 
