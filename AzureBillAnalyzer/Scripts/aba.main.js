@@ -6,59 +6,126 @@
 */
 class ABA_Main {
 	constructor() {
-		this._$window = $(window);
-		this._$document = $(document);
-		this._$body = $('body');
-		this._$main = $('#main');
+		this._body = document.getElementsByTagName('body')[0];
 
-		this._$nav = $('#mainNav');
+		this._main = document.getElementById('main');
+		this._nav = document.getElementById('mainNav');
 
-		//Handle main navigation drawer events
-		this._$nav
-			.on('click', '#hamburger', this.ToggleNavDrawer.bind(this))
-			.on('click', 'li', this.Navigate.bind(this));
+		//Handle opening/closing the navigation drawer
+		document.getElementById('navHamburger').addEventListener('click', () => {
+			let newOpenVal = "";
+			if (this._nav.classList.contains('open')) {
+				this._nav.classList.remove('open');
+				newOpenVal = "false";
+			} else {
+				this._nav.classList.add('open');
+				newOpenVal = "true";
+			}
+
+			this.UpdateUserPreference("NavDrawerOpen", newOpenVal);
+		});
+		this._nav.querySelectorAll('li').forEach((ele) => {
+			ele.addEventListener('click', this.Navigate.bind(this));
+		});
 
 		//Set currently active nav item
-		this._$nav.find('[data-section="' + this._$body.data('section') + '"]').addClass('active');
+		this._nav.querySelector(`[data-section="${this._body.getAttribute('data-section')}"]`).classList.add('active');
 	}
 
-	ToggleNavDrawer(evt) {
-		this._$nav.toggleClass('open');
-
-		this.UpdateUserPreference("NavDrawerOpen", ((this._$nav.hasClass('open')) ? "true" : "false"));
-	}
-	Navigate(evt) {
-		let $target = $(evt.target);
-
-		if ($target.data('href').length > 0) {
-			window.location.href = $target.data('href');
+	//Logs data to the console if we're running in 'debug' mode
+	Log(str) {
+		if (pac_debug) {
+			console.log(str);
 		}
 	}
 
-	UpdateUserPreference(pref, value) {
-		$.ajax({
-			url: "/Account/UpdatePreference",
-			type: 'POST',
-			data: JSON.stringify({
-				pref: pref,
-				value: value
-			}),
-			cache: false,
-			contentType: "application/json; charset=utf-8"
+	//Navigates to the page for the selected navmenu item if a link exists
+	Navigate(evt) {
+		if (evt.target.getAttribute('data-href').length > 0) {
+			window.location.href = evt.target.getAttribute('data-href');
+		}
+	}
+
+	//Sends message to server to update users specified preference
+	async UpdateUserPreference(pref, value) {
+		return await this.Post("/Account/UpdatePreference", {
+			pref: pref,
+			value: value
 		});
 	}
 
-	BuildInlineErrorMessage(title, message) {
-		return `<h2 class='error'>${title}</h2><p class='error'>${message}</p>`;
+	//Checks GET/POST results for error messages from the server
+	//Returns: BOOL (true if error occurred and was handled here, false otherwise)
+	HandleServerErrorResult(result) {
+		if (result.error) {
+			switch (result.error) {
+				case "redirect":
+					window.location.href = result.redirect;
+					return true;
+				default:
+					this.Log(result.error + ": " + result.errorMessage);
+					return true;
+			}
+		} else {
+			return false;
+		}
+	}
+	//Queries the specified url route
+	//Returns: JSON (query result from server, or 'null' if there was an error)
+	async Get(route) {
+		try {
+			let response = await fetch(route, {
+				method: 'GET',
+				headers: {
+					'Content-type': 'application/json'
+				}
+			});
+			let result = await response.json();
+
+			if (!this.HandleServerErrorResult(result)) {
+				return result;
+			} else {
+				return null;
+			}
+		} catch (err) {
+			Log(err.message);
+
+			return null;
+		}
+	}
+	//Queries the specified url route with the specified post data
+	//Returns: JSON (query result from server, or 'null' if there was an error)
+	async Post(route, data) {
+		try {
+			let response = await fetch(route, {
+				method: 'POST',
+				headers: {
+					'Accept': 'application/json',
+					'Content-type': 'application/json'
+				},
+				body: JSON.stringify(data)
+			});
+			let result = await response.json();
+
+			if (!this.HandleServerErrorResult(result)) {
+				return result;
+			} else {
+				return null;
+			}
+		} catch (err) {
+			this.Log(err.message);
+
+			return null;
+		}
 	}
 }
 
-var ABA = null;
-$(document).ready(function() {
+let ABA = null;
+let start = function() {
 	//When done loading, init the functionality for the current page.
 	//Use 'body' class attribute and 'pageClassMap' to init the correct ABA subclass.
 	//EX:	if: "<body class='aba-page-dashboard'>" then: "ABA = new ABA_Dashboard();"
-	let pageClass = $('body').attr('class').split('-')[2],
+	let pageClass = document.getElementsByTagName('body')[0].className.split('-')[2],
 		pageClassMap = {
 			'index': ABA_Index,
 			'dashboard': ABA_Dashboard,
@@ -67,4 +134,9 @@ $(document).ready(function() {
 		};
 
 	ABA = new pageClassMap[pageClass]();
-});
+};
+if ((document.readyState === "complete") || ((document.readyState !== "loading") && (!document.documentElement.doScroll))) {
+	start();
+} else {
+	document.addEventListener("DOMContentLoaded", start);
+}

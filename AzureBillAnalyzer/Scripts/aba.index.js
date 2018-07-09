@@ -2,126 +2,125 @@
 	constructor() {
 		super();
 
-		this._$form = $('#fileForm');
-		this._$file = $('#fileField');
-		this._$dropTarget = $('#dropTarget');
+		this._form = document.getElementById('fileForm');
+		this._file = document.getElementById('fileField');
+		this._dropTarget = document.getElementById('dropTarget');
 		this._dropZoneVisible = false;
 		this._dropZoneTimer = null;
-		this._$progress = $('#progress');
-		this._$error = $('#uploadError');
+		this._progress = document.getElementById('progress');
+		this._error = document.getElementById('uploadError');
 
-		let _self = this;
+		//Handle UI for the file drop zone
+		['dragstart', 'dragenter', 'dragover'].forEach((evt) => {
+			document.addEventListener(evt, this.MouseDraggingStarted.bind(this));
+		});
+		['drop', 'dragleave', 'dragend'].forEach((evt) => {
+			document.addEventListener(evt, this.MouseDraggingStopped.bind(this));
+		});
+		
+		this._dropTarget.addEventListener('click', (evt) => { this._file.click(); });
+		this._dropTarget.addEventListener('drop', this.FileSelected.bind(this));
+		['change', 'drop'].forEach((evt) => {
+			this._file.addEventListener(evt, this.FileSelected.bind(this));
+		});
+	}
+	MouseDraggingStarted(evt) {
+		//If a file is being dragged over the document
+		if (evt.dataTransfer.types.includes('Files')) {
+			evt.stopPropagation();
+			evt.preventDefault();
 
-		//Handle the UI for the file drop zone
-		this._$document
-			.on('dragstart dragenter dragover', function(evt) {
-				//If the user is dragging a file over the 'document'
-				if ($.inArray("Files", evt.originalEvent.dataTransfer.types) > -1) {
-					evt.stopPropagation();
-					evt.preventDefault();
+			//Highlight our drop zone
+			this._dropTarget.classList.add('active');
+			this._dropZoneVisible = true;
 
-					//Highlight our drop zone
-					_self._$dropTarget.addClass('active');
-					_self._dropZoneVisible = true;
+			//Only show the 'copy' cursor when the cursor is over the drop zone
+			if ((evt.target.getAttribute('id') === "dropTarget") || (evt.target.getAttribute('id') === "fileField")) {
+				evt.dataTransfer.effectAllowed = 'copyMove';
+				evt.dataTransfer.dropEffect = 'copy';
+			} else {
+				evt.dataTransfer.effectAllowed = 'none';
+				evt.dataTransfer.dropEffect = 'none';
+			}
+		}
+	}
+	MouseDraggingStopped(evt) {
+		//No more files are being dragged over the document, so reset the UI
+		this._dropZoneVisible = false;
 
-					//Only show the 'copy' cursor when the cursor is over the drop zone
-					evt.originalEvent.dataTransfer.effectAllowed = 'none';
-					evt.originalEvent.dataTransfer.dropEffect = 'none';
-
-					if (($(evt.target).attr('id') === "dropTarget") || ($(evt.target).attr('id') === "fileField")) {
-						evt.originalEvent.dataTransfer.effectAllowed = 'copyMove';
-						evt.originalEvent.dataTransfer.dropEffect = 'copy';
-					}
-				}
-			})
-			.on('drop dragleave dragend', function(evt) {
-				//No more files are being dragged over the 'document', so reset the UI
-				_self._dropZoneVisible = false;
-
-				//Use a short timer to prevent rapid on/off/on/off/etc events
-				if (_self._dropZoneTimer !== null) {
-					clearTimeout(_self._dropZoneTimer);
-				}
-				_self._dropZoneTimer = setTimeout(function() {
-					if (!_self._dropZoneVisible) {
-						_self._$dropTarget.removeClass('active');
-					}
-					_self._dropZoneTimer = null;
-				}, 100);
-			});
-
-		this._$dropTarget
-			.click(e => { _self._$file.click(); })
-			.on('drop', this.FileSelected.bind(this));
-		this._$file
-			.on('change drop', this.FileSelected.bind(this));
+		//Use a short timer to prevent rapid on/off/on/off events
+		if (this._dropZoneTimer !== null) {
+			clearTimeout(this._dropZoneTimer);
+		}
+		this._dropZoneTimer = setTimeout(() => {
+			if (!this._dropZoneVisible) {
+				this._dropTarget.classList.remove('active');
+			}
+			this._dropZoneTimer = null;
+		}, 100);
 	}
 
-	FileSelected(evt) {
-		let _self = this,
-			formData = null,
+	async FileSelected(evt) {
+		let formData = null,
 			files = null;
 
-		//Don't let browser try to handle the file
+		//Don't let the browser try to handle the file
 		evt.stopPropagation();
 		evt.preventDefault();
 
 		//Clear any previous errors
-		this._$error.addClass('hidden');
+		this._error.classList.add('hidden');
 
 		//Called from manual file selection or drag & drop, check both event types to get the file
 		if ((evt.target.files) && (evt.target.files.length > 0)) {
 			files = evt.target.files;
-		} else if ((evt.originalEvent.dataTransfer.files) && (evt.originalEvent.dataTransfer.files.length > 0)) {
-			files = evt.originalEvent.dataTransfer.files;
+		} else if ((evt.dataTransfer.files) && (evt.dataTransfer.files.length > 0)) {
+			files = evt.dataTransfer.files;
 		}
 
 		if (files === null) {
 			return;
 		}
 		if (files.length > 1) {
-			this._$error
-				.text("Only 1 file at a time please")
-				.removeClass('hidden');
+			this._error.innerHTML = "Only 1 file at a time please";
+			this._error.classList.remove('hidden');
 			return;
 		}
-		
 		switch (files[0].type) {
 			case "text/csv":
 			case "application/vnd.ms-excel":
 				break;
 			default:
-				this._$error
-					.text("Only .csv bills from Azure please")
-					.removeClass('hidden');
+				this._error.innerHTML = "Only .csv bills from Azure please";
+				this._error.classList.remove('hidden');
 				return;
 		}
 
 		//Passed initial file checks, start uploading
-		this._$progress.removeClass('hidden');
+		this._progress.classList.remove('hidden');
 
 		formData = new FormData();
 		formData.append(files[0].name, files[0]);
 
-		$.ajax({
-			url: this._$form.attr('action'),
-			type: 'POST',
-			data: formData,
-			cache: false,
-			processData: false,
-			contentType: false
-		}).done(function(result, statusText, jqXHR) {
+		try {
+			let response = await fetch(this._form.getAttribute('action'), {
+				method: 'POST',
+				body: formData
+			});
+			let result = await response.json();
+
 			if (result.error) {
-				_self._$form[0].reset();
+				this._form.reset();
 
-				_self._$error
-					.text(result.error + ": " + result.errorMessage)
-					.removeClass('hidden');
+				this._error.innerHTML = `${result.error}: ${result.errorMessage}`;
+				this._error.classList.remove('hidden');
 
-				_self._$progress.addClass('hidden');
+				this._progress.classList.add('hidden');
 			} else if (result.success) {
-				window.location.href = "/dashboard/" + result.file.split(".")[0];
+				window.location.href = `/dashboard/${result.file.split(".")[0]}`;
 			}
-		});
+		} catch (err) {
+			this.Log(err.message);
+		}
 	}
 }

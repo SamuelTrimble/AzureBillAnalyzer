@@ -135,7 +135,7 @@ a, a:visited, a:active, a:hover {
 								line-height: 20px;
 								background-color: #262626;
 								border-bottom: 1px solid #276CB9; }
-				#mainNav > #hamburger {
+				#mainNav > #navHamburger {
 								display: block;
 								position: absolute;
 								padding: 15px;

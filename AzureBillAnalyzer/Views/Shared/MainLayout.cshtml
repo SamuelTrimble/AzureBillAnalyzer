@@ -20,7 +20,7 @@
 <body class="aba-page-@(Model.PageClass)" data-section="@(Model.PageSection)">
 	<nav id="mainNav" class="@(((Model.Session.NavDrawerOpen) ? "open" : ""))">
 		<h1 id="navHeader">Azure Bill Analyzer</h1>
-		<span id="hamburger"></span>
+		<span id="navHamburger"></span>
 		<ul>
 			<li id="navUpload" data-section="Index" data-href="@(Url.Action("Index", "Main"))">Upload File</li>
 			<li id="navDashboard" class="@(((Model.Session.CurrentFile.Equals(Guid.Empty)) ? "disabled" : ""))" data-section="Dashboard" data-href="@(Url.Action("Dashboard", "Main", new { file = Model.Session.CurrentFile }))">Dashboard</li>

@@ -2,13 +2,13 @@
 	constructor() {
 		super();
 
-		this._$dashboard = $('#dashboard');
-		this._$overview = $('#overview');
+		this._dashboard = document.getElementById('dashboard');
+		this._overview = document.getElementById('overview');
 
 		this._curGrouping = "Resource Groups";
-		this._$monthGrouping = $('#dashboard-monthGroupingDropdown');
-		this._$monthGraph = $('#dashboard-monthGraph');
-		this._monthGraphContext = this._$monthGraph[0].getContext('2d');
+		this._monthGrouping = document.getElementById('dashboard-monthGroupingDropdown');
+		this._monthGraph = document.getElementById('dashboard-monthGraph');
+		this._monthGraphContext = this._monthGraph.getContext('2d');
 		this._monthGraphChart = null;
 		this._monthGraphChartOptions = {
 			responsive: true,
@@ -46,8 +46,8 @@
 			}
 		};
 
-		this._$groupTotalGraph = $('#dashboard-groupTotalGraph');
-		this._groupTotalGraphContext = this._$groupTotalGraph[0].getContext('2d');
+		this._groupTotalGraph = document.getElementById('dashboard-groupTotalGraph');
+		this._groupTotalGraphContext = this._groupTotalGraph.getContext('2d');
 		this._groupTotalChart = null;
 		this._groupTotalChartOptions = {
 			responsive: true,
@@ -73,8 +73,8 @@
 			}
 		};
 
-		this._$serviceTotalGraph = $('#dashboard-serviceTotalGraph');
-		this._serviceTotalGraphContext = this._$serviceTotalGraph[0].getContext('2d');
+		this._serviceTotalGraph = document.getElementById('dashboard-serviceTotalGraph');
+		this._serviceTotalGraphContext = this._serviceTotalGraph.getContext('2d');
 		this._serviceTotalChart = null;
 		this._serviceTotalChartOptions = {
 			responsive: true,
@@ -117,22 +117,29 @@
 			"#F66364"
 		];
 
-		//Handle UI events while keeping class scope of 'this'
-		this._$monthGrouping.on('click', 'li', this.ChangeMonthGraphGrouping.bind(this));
+		this._monthGrouping.querySelectorAll('li').forEach((ele) => {
+			ele.addEventListener('click', this.ChangeMonthGraphGrouping.bind(this));
+		});
 
 		//Page is now loaded, kick off processing
-		//This may take some time with large files... maybe implement a SignalR interface later for incremental progress updates?
-		this._$main.addClass('loadingBackground');
+		this.ProcessData();
+	}
 
-		$.ajax({
-			url: "/processfile",
-			type: 'POST',
-			cache: false
-		}).done((result, statusText, jqXHR) => {
-			if (result.error) {
-				this._$dashboard.append(_self.BuildInlineErrorMessage(result.error, result.errorMessage));
-				this._$dashboard.append("<p class='error'>Make sure to upload a valid v2 Azure csv bill.</p>");
-			} else {
+	async ProcessData() {
+		//This may take some time with large files... maybe implement a SignalR interface later for incremental progress updates?
+		this._main.classList.add('loadingBackground');
+
+		try {
+			let response = await fetch("/processfile", {
+				method: 'POST',
+				headers: {
+					'Accept': 'application/json',
+					'Content-type': 'application/json'
+				}
+			});
+			let result = await response.json();
+
+			if (!this.HandleServerErrorResult(result)) {
 				this._data = result;
 
 				this._data.Subscriptions.sort((a, b) => a.Name.localeCompare(b.Name));
@@ -149,10 +156,14 @@
 				this.BuildMonthGraph();
 				this.BuildGroupTotalGraph();
 				this.BuildServiceTotalGraph();
+			} else {
+				let errContent = `<h2 class='error'>${result.error}</h2><p class='error'>${result.errorMessage}</p><p class='error'>Make sure to upload a valid v2 Azure csv bill.</p>`;
+				this._dashboard.insertAdjacentHTML('beforeend', errContent);
 			}
-
-			this._$main.removeClass('loadingBackground');
-		});
+		} catch (err) {
+			this.Log(err.message);
+		}
+		this._main.classList.remove('loadingBackground');
 	}
 
 	ComputeBillTotal() {
@@ -161,7 +172,7 @@
 		this._data.Services.forEach((item) => { total = total.plus(item.TotalCost); });
 
 		let content = `Bill Total: ${total.toFixed(2)} <small>(without tax)</small>`;
-		this._$dashboard.find('#dashboard-total').html(content);
+		document.getElementById('dashboard-total').innerHTML = content;
 	}
 	ListSubscriptions() {
 		let content = "";
@@ -180,7 +191,7 @@
 			content += itemContent;
 		});
 
-		this._$overview.find('#subscriptionList').html(content);
+		document.getElementById('subscriptionList').innerHTML = content;
 	}
 	ListResourceGroups() {
 		let content = "";
@@ -209,7 +220,7 @@
 			content += itemContent;
 		});
 
-		this._$overview.find('#groupList').html(content);
+		document.getElementById('groupList').innerHTML = content;
 	}
 	ListServices() {
 		let content = "";
@@ -234,7 +245,7 @@
 			}
 		});
 
-		this._$overview.find('#serviceList').html(content);
+		document.getElementById('serviceList').innerHTML = content;
 	}
 
 	BuildGraphDates() {
@@ -269,15 +280,17 @@
 	}
 
 	ChangeMonthGraphGrouping(evt) {
-		let selItem = $(evt.target),
-			allItems = this._$monthGrouping.find('li'),
-			newGrouping = selItem.data('grouping'),
-			label = this._$monthGrouping.find('label');
+		let selItem = evt.target,
+			allItems = this._monthGrouping.querySelectorAll('li'),
+			newGrouping = selItem.getAttribute('data-grouping'),
+			label = this._monthGrouping.querySelector('label');
 
 		//Update dropdown UI
-		label.text(`Group by: ${newGrouping}`);
-		allItems.removeClass('active');
-		selItem.addClass('active');
+		label.innerHTML = `Group by: ${newGrouping}`;
+		allItems.forEach((ele) => {
+			ele.classList.remove('active');
+		});
+		selItem.classList.add('active');
 
 		//Rebuild graph
 		this._curGrouping = newGrouping;

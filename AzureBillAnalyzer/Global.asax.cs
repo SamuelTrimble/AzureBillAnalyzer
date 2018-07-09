@@ -32,7 +32,7 @@ namespace AzureBillAnalyzer {
 					break;
 				case "http":
 					//Force unsecure connections to redirect
-					var path = "https://" + Request.Url.Host + Request.Url.PathAndQuery;
+					string path = "https://" + Request.Url.Host + Request.Url.PathAndQuery;
 					Response.Status = "301 Moved Permanently";
 					Response.AddHeader("Location", path);
 					break;

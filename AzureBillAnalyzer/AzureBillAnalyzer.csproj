@@ -138,7 +138,6 @@
     <Content Include="Global.asax" />
     <Content Include="Libraries\Chart\chartjs.bundle-2.7.1.min.js" />
     <Content Include="Libraries\decimal\decimal.light-2.3.1.min.js" />
-    <Content Include="Libraries\jQuery\jquery-3.3.1.min.js" />
     <Content Include="Scripts\aba.about.js" />
     <Content Include="Scripts\aba.error.js" />
     <Content Include="Scripts\aba.dashboard.js" />
