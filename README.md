@@ -2,7 +2,7 @@
 
 A visual dashboard that processes .csv bills from Azure in order to see cost breakdowns by services used, resource groups, and time.
 
-![Version](https://img.shields.io/badge/version-v0.1.3.0401(beta)-blue.svg) ![Build Status](https://img.shields.io/vso/build/samueltrimble/1611dc5d-c62b-4b86-9850-f6b7d72e42f6/1.svg)
+![Version](https://img.shields.io/badge/version-v0.1.4.0709(beta)-blue.svg) ![Build Status](https://img.shields.io/vso/build/samueltrimble/1611dc5d-c62b-4b86-9850-f6b7d72e42f6/1.svg)
 
 <br>
 
