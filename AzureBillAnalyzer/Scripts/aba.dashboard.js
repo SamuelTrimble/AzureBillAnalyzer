@@ -135,7 +135,8 @@
 				headers: {
 					'Accept': 'application/json',
 					'Content-type': 'application/json'
-				}
+				},
+				credentials: 'include'
 			});
 			let result = await response.json();
 

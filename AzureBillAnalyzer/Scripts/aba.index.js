@@ -105,6 +105,7 @@
 		try {
 			let response = await fetch(this._form.getAttribute('action'), {
 				method: 'POST',
+				credentials: 'include',
 				body: formData
 			});
 			let result = await response.json();
