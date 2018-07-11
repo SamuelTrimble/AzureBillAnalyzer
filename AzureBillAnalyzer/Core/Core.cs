@@ -38,7 +38,7 @@ namespace AzureBillAnalyzer.Core {
 			ABASessionData sData = new ABASessionData();
 
 			sData.IsUserValidated = false;
-			sData.NavDrawerOpen = true;
+			sData.NavDrawerOpen = false;
 			sData.CurrentFile = Guid.Empty;
 
 			return sData;

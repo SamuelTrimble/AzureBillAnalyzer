@@ -37,6 +37,7 @@
 
 	<span id="buildcopyright">Azure Bill Analyzer x@(ViewContext.Controller.GetType().Assembly.GetName().Version.ToString())</span>
 
+	<script>let aba_debug = @((HttpContext.Current.IsDebuggingEnabled) ? "true" : "false");</script>
 	@(Scripts.Render(MVCConfig.bundledScripts))
 	@(RenderSection("scripts", false))
 </body>

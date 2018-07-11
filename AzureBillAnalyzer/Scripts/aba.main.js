@@ -34,7 +34,7 @@ class ABA_Main {
 
 	//Logs data to the console if we're running in 'debug' mode
 	Log(str) {
-		if (pac_debug) {
+		if (aba_debug) {
 			console.log(str);
 		}
 	}
@@ -47,8 +47,8 @@ class ABA_Main {
 	}
 
 	//Sends message to server to update users specified preference
-	async UpdateUserPreference(pref, value) {
-		return await this.Post("/Account/UpdatePreference", {
+	UpdateUserPreference(pref, value) {
+		this.Post("/Account/UpdatePreference", {
 			pref: pref,
 			value: value
 		});
@@ -88,7 +88,7 @@ class ABA_Main {
 				return null;
 			}
 		} catch (err) {
-			Log(err.message);
+			this.Log(err.message);
 
 			return null;
 		}
@@ -103,6 +103,7 @@ class ABA_Main {
 					'Accept': 'application/json',
 					'Content-type': 'application/json'
 				},
+				credentials: 'include',
 				body: JSON.stringify(data)
 			});
 			let result = await response.json();
@@ -122,7 +123,6 @@ class ABA_Main {
 
 let ABA = null;
 let start = function() {
-	//When done loading, init the functionality for the current page.
 	//Use 'body' class attribute and 'pageClassMap' to init the correct ABA subclass.
 	//EX:	if: "<body class='aba-page-dashboard'>" then: "ABA = new ABA_Dashboard();"
 	let pageClass = document.getElementsByTagName('body')[0].className.split('-')[2],
@@ -135,6 +135,7 @@ let start = function() {
 
 	ABA = new pageClassMap[pageClass]();
 };
+//When done loading, init the functionality for the current page.
 if ((document.readyState === "complete") || ((document.readyState !== "loading") && (!document.documentElement.doScroll))) {
 	start();
 } else {
